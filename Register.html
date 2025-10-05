@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registration - Practical 6</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --accent: #3b82f6;
+      --muted: #6b7280;
+      --danger: #dc2626;
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:20px;
+    }
+    .container{
+      width:100%;
+      max-width:520px;
+      background:var(--card);
+      padding:26px;
+      border-radius:12px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    }
+    h1{ margin:0 0 8px; font-size:22px; }
+    .lead{ margin:0 0 16px; color:var(--muted); }
+    .grid{ display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+    label{ display:block; font-size:13px; margin-bottom:6px; color:#111827; }
+    input[type="text"], input[type="email"], input[type="password"], input[type="tel"]{
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      font-size:14px;
+      box-sizing:border-box;
+    }
+    .full { grid-column: 1 / -1; }
+    .actions{ margin-top:14px; display:flex; gap:10px; align-items:center; }
+    .btn{
+      background:var(--accent);
+      color:white;
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:15px;
+    }
+    .small{ font-size:13px; color:var(--muted); }
+    .error{ color:var(--danger); margin-top:8px; font-size:13px; display:none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registration</h1>
+    <p class="lead">Fill the form and press Submit. Fields marked with * are required.</p>
+
+    <form id="regForm" action="Practical_6.php" method="post" novalidate>
+      <div class="grid">
+        <div>
+          <label for="fullname">Full name *</label>
+          <input id="fullname" name="fullname" type="text" required maxlength="100" placeholder="Your full name">
+        </div>
+
+        <div>
+          <label for="username">Username *</label>
+          <input id="username" name="username" type="text" required maxlength="50" placeholder="Choose a username">
+        </div>
+
+        <div>
+          <label for="email">Email *</label>
+          <input id="email" name="email" type="email" required maxlength="150" placeholder="you@example.com">
+        </div>
+
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" pattern="[0-9]{10}" maxlength="10" placeholder="10 digit phone (optional)">
+        </div>
+
+        <div class="full">
+          <label for="password">Password *</label>
+          <input id="password" name="password" type="password" required minlength="6" placeholder="At least 6 characters">
+        </div>
+
+        <div class="full">
+          <label for="confirm_password">Confirm password *</label>
+          <input id="confirm_password" name="confirm_password" type="password" required minlength="6" placeholder="Repeat password">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="submit">Submit</button>
+        <span class="small">We store your details in a server file (CSV).</span>
+      </div>
+
+      <p id="formError" class="error" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <script>
+    // small client-side check: make sure passwords match
+    const form = document.getElementById('regForm');
+    const pwd = document.getElementById('password');
+    const cpwd = document.getElementById('confirm_password');
+    const formError = document.getElementById('formError');
+
+    form.addEventListener('submit', function(e){
+      formError.style.display = 'none';
+      if (pwd.value !== cpwd.value) {
+        e.preventDefault();
+        formError.textContent = 'Passwords do not match.';
+        formError.style.display = 'block';
+        cpwd.focus();
+        return false;
+      }
+      // Let the browser perform the other native checks (required, email)
+    });
+  </script>
+</body>
+</html>
